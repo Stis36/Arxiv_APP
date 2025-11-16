@@ -1,10 +1,30 @@
 """
-arXiv論文検索モジュール（後方互換性のため）
-このファイルは後方互換性のために残されています。
-新しいコードでは arxiv_search.py, date_utils.py, main.py を使用してください。
+arXiv論文検索メインプログラム
 """
 from arxiv_search import search_papers_by_date
 from date_utils import get_date_range
+
+
+def display_results(results):
+    """
+    検索結果を表示する関数
+    
+    Args:
+        results: 検索結果のリスト
+    """
+    print(f"検索結果数: {len(results)}")
+
+    if results:
+        # すべての結果を表示
+        print(f"\n=== 検索結果一覧 ===")
+        for i, result in enumerate(results, 1):
+            print(f"\n{i}. {result.title}")
+            print(f"   著者: {', '.join([str(author) for author in result.authors[:3]])}")
+            print(f"   カテゴリー: {', '.join([str(cat) for cat in result.categories])}")
+            print(f"   URL: {result.entry_id}")
+            #print(f"   要約: {result.summary}")
+    else:
+        print("検索結果がありませんでした。")
 
 
 if __name__ == "__main__":
@@ -34,17 +54,7 @@ if __name__ == "__main__":
         end_date=end_target,
         max_results=max_results
     )
+    
+    # ===== 結果表示 =====
+    display_results(results)
 
-    print(f"検索結果数: {len(results)}")
-
-    if results:
-        # すべての結果を表示
-        print(f"\n=== 検索結果一覧 ===")
-        for i, result in enumerate(results, 1):
-            print(f"\n{i}. {result.title}")
-            print(f"   著者: {', '.join([str(author) for author in result.authors[:3]])}")
-            print(f"   カテゴリー: {', '.join([str(cat) for cat in result.categories])}")
-            print(f"   URL: {result.entry_id}")
-            #print(f"   要約: {result.summary}")
-    else:
-        print("検索結果がありませんでした。")
