@@ -140,3 +140,6 @@ Gemini APIを使用した論文ジャンル分類モジュール。
    Gemini判定（自動運転）: No
 ```
 
+
+<img width="667" height="215" alt="スクリーンショット 2025-11-15 18 24 07" src="https://github.com/user-attachments/assets/2db6575a-93a3-408f-8bdd-45df0c0244bb" />
+
