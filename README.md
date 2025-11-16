@@ -1,6 +1,8 @@
 # Arxiv_APP
 
 arXivから新規発行された論文を取得し、Gemini APIを使用してジャンル分類を行うアプリケーションです。
+<img width="667" height="215" alt="スクリーンショット 2025-11-15 18 24 07" src="https://github.com/user-attachments/assets/2db6575a-93a3-408f-8bdd-45df0c0244bb" />
+
 
 ## 機能
 
@@ -101,7 +103,3 @@ Gemini APIを使用した論文ジャンル分類モジュール。
    URL: http://arxiv.org/abs/2024.12346
    Gemini判定（自動運転）: No
 ```
-
-
-<img width="667" height="215" alt="スクリーンショット 2025-11-15 18 24 07" src="https://github.com/user-attachments/assets/2db6575a-93a3-408f-8bdd-45df0c0244bb" />
-
