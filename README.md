@@ -17,13 +17,25 @@ arXivから新規発行された論文を取得し、Gemini APIを使用して�
 - 以下のPythonパッケージ:
   - `arxiv` - arXiv APIクライアント
   - `google-generativeai` - Gemini APIクライアント
+  - `streamlit` - Web UIフレームワーク（Web UIを使用する場合）
 
 ## セットアップ
 
 ### 1. 依存パッケージのインストール
 
+**コマンドライン版の場合:**
 ```bash
 pip install arxiv google-generativeai
+```
+
+**Web UI版の場合:**
+```bash
+pip install -r requirements.txt
+```
+
+または個別にインストール:
+```bash
+pip install arxiv google-generativeai streamlit
 ```
 
 ### 2. 環境変数の設定
@@ -38,7 +50,30 @@ export GEMINI_API_KEY="your-api-key-here"
 
 ## 使用方法
 
-### 基本的な使い方
+### Web UI版（推奨）
+
+Streamlitを使用したWebインターフェースを提供しています。
+
+```bash
+streamlit run app.py
+```
+
+ブラウザが自動的に開き、以下の機能が利用できます：
+
+- **サイドバーで検索設定**
+  - 日付モード（自動/手動）の選択
+  - 日付範囲の指定（手動モードの場合）
+  - 最大結果数の設定
+  - Gemini判定の有効/無効
+  - 判定したいジャンルの指定
+
+- **検索結果の表示**
+  - 論文タイトル、著者、カテゴリー
+  - アブストラクトの表示/非表示
+  - Gemini判定結果（該当/非該当）
+  - 判定結果の統計情報
+
+### コマンドライン版
 
 ```bash
 python main.py
@@ -67,8 +102,11 @@ TARGET_GENRE = "自動運転"      # 判定したいジャンル名
 
 ## モジュール構成
 
+### `app.py`
+Streamlitを使用したWeb UIアプリケーション。ブラウザベースのインターフェースを提供。
+
 ### `main.py`
-メインプログラム。検索パラメータの設定、検索実行、結果表示を担当。
+コマンドライン版のメインプログラム。検索パラメータの設定、検索実行、結果表示を担当。
 
 ### `arxiv_search.py`
 arXiv論文検索モジュール。

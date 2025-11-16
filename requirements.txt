@@ -1,0 +1,4 @@
+arxiv>=2.1.0
+google-generativeai>=0.3.0
+streamlit>=1.28.0
+
