@@ -3,9 +3,55 @@ arXiv論文検索モジュール
 """
 import arxiv
 from datetime import datetime
+from typing import Optional, List, Union
 
 
-def search_papers_by_date(start_date=None, end_date=None, max_results=10):
+def _format_date_to_yyyymmdd(date: Union[str, datetime, None]) -> Optional[str]:
+    """
+    日付をYYYYMMDD形式の文字列に変換する
+    
+    Args:
+        date: 日付（YYYYMMDD形式の文字列、datetimeオブジェクト、またはNone）
+    
+    Returns:
+        YYYYMMDD形式の文字列、またはNone
+    """
+    if date is None:
+        return None
+    
+    if isinstance(date, datetime):
+        return date.strftime('%Y%m%d')
+    
+    # 文字列の場合はハイフンを削除
+    return str(date).replace('-', '')
+
+
+def _build_date_query(start_date: Optional[str], end_date: Optional[str]) -> str:
+    """
+    日付範囲のクエリを構築する
+    
+    Args:
+        start_date: 開始日（YYYYMMDD形式の文字列、またはNone）
+        end_date: 終了日（YYYYMMDD形式の文字列、またはNone）
+    
+    Returns:
+        arXiv検索用の日付クエリ文字列
+    """
+    if start_date and end_date:
+        return f'submittedDate:[{start_date} TO {end_date}]'
+    elif start_date:
+        return f'submittedDate:[{start_date} TO *]'
+    elif end_date:
+        return f'submittedDate:[* TO {end_date}]'
+    else:
+        return '*'
+
+
+def search_papers_by_date(
+    start_date: Optional[Union[str, datetime]] = None,
+    end_date: Optional[Union[str, datetime]] = None,
+    max_results: int = 10
+) -> List[arxiv.Result]:
     """
     特定の日付範囲でarXiv論文を検索する関数
     
@@ -17,34 +63,12 @@ def search_papers_by_date(start_date=None, end_date=None, max_results=10):
     Returns:
         検索結果のリスト
     """
-    # 日付範囲のクエリを構築
-    date_query = ""
+    # 日付をYYYYMMDD形式に変換
+    start_str = _format_date_to_yyyymmdd(start_date)
+    end_str = _format_date_to_yyyymmdd(end_date)
     
-    if start_date or end_date:
-        # 日付をYYYYMMDD形式に変換
-        if isinstance(start_date, datetime):
-            start_str = start_date.strftime('%Y%m%d')
-        elif start_date:
-            start_str = str(start_date).replace('-', '')
-        else:
-            start_str = None
-            
-        if isinstance(end_date, datetime):
-            end_str = end_date.strftime('%Y%m%d')
-        elif end_date:
-            end_str = str(end_date).replace('-', '')
-        else:
-            end_str = None
-        
-        # 日付範囲のクエリを構築
-        if start_str and end_str:
-            date_query = f'submittedDate:[{start_str} TO {end_str}]'
-        elif start_str:
-            date_query = f'submittedDate:[{start_str} TO *]'
-        elif end_str:
-            date_query = f'submittedDate:[* TO {end_str}]'
-    else:
-        date_query = '*'
+    # 日付範囲のクエリを構築
+    date_query = _build_date_query(start_str, end_str)
     
     # 検索を実行
     client = arxiv.Client()

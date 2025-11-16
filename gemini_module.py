@@ -2,14 +2,16 @@
 Gemini API を使用した論文ジャンル分類モジュール
 """
 import os
+from typing import Optional
 import google.generativeai as genai
 
 
-# デフォルト設定
+# 定数定義
 DEFAULT_MODEL_NAME = "gemini-2.5-flash"
+ENV_VAR_API_KEY = "GEMINI_API_KEY"
 
 
-def create_prompt(genre, abstract):
+def create_prompt(genre: str, abstract: str) -> str:
     """
     ジャンル分類用のプロンプトを生成する関数
     
@@ -32,7 +34,11 @@ def create_prompt(genre, abstract):
     return prompt
 
 
-def get_gemini_response(prompt, api_key=None, model_name=None):
+def get_gemini_response(
+    prompt: str,
+    api_key: Optional[str] = None,
+    model_name: Optional[str] = None
+) -> str:
     """
     Gemini APIを使用してテキスト生成を実行する関数
     
@@ -49,10 +55,10 @@ def get_gemini_response(prompt, api_key=None, model_name=None):
     """
     # APIキーの取得
     if api_key is None:
-        api_key = os.getenv("GEMINI_API_KEY")
+        api_key = os.getenv(ENV_VAR_API_KEY)
     
     if api_key is None:
-        raise RuntimeError("環境変数 GEMINI_API_KEY が設定されていません。")
+        raise RuntimeError(f"環境変数 {ENV_VAR_API_KEY} が設定されていません。")
     
     # モデル名の設定
     if model_name is None:
@@ -70,7 +76,12 @@ def get_gemini_response(prompt, api_key=None, model_name=None):
     return response.text
 
 
-def classify_genre(genre, abstract, api_key=None, model_name=None):
+def classify_genre(
+    genre: str,
+    abstract: str,
+    api_key: Optional[str] = None,
+    model_name: Optional[str] = None
+) -> str:
     """
     論文のアブストラクトが指定されたジャンルに該当するかを判定する関数
     
